@@ -1,0 +1,66 @@
+version: "3.8"  # Specifies the Compose file format version. Compatible with Docker Engine 19.03+.
+
+services:
+  scene_graph_benchmark:
+    build:
+      context: .  # Build the image from the current directory.
+      dockerfile: Dockerfile  # Use the specified Dockerfile to build the image.
+    image: lab_sg_extract_container:latest  # Custom, recognizable image name.
+    runtime: nvidia  # Enable NVIDIA GPU runtime for GPU acceleration.
+    
+    environment:
+      # Explicitly set environment variables for the container
+      - NVIDIA_VISIBLE_DEVICES=all         # Expose all GPUs to the container
+      - CUDA_VISIBLE_DEVICES=0            # Restrict container to GPU 0 (optional)
+      - NVIDIA_DRIVER_CAPABILITIES=compute,utility  # Required for CUDA support
+      - CONDA_DEFAULT_ENV=py38            # Set default Conda environment
+      - CONDA_PREFIX=/miniconda/envs/py38 # Path to the Conda environment
+      - PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/miniconda/envs/py38/bin:/miniconda/bin:/usr/local/cuda/bin
+      - LD_LIBRARY_PATH=/usr/local/cuda/lib64:/usr/lib/x86_64-linux-gnu:/lib/x86_64-linux-gnu
+
+    # Use an external .env file for sensitive variables or environment-specific configurations.
+    # Example: NVIDIA_VISIBLE_DEVICES=all in .env.prod, NVIDIA_VISIBLE_DEVICES=0 in .env.dev
+    # Tip: We can just ignore the "Property env_file is not allowed.yaml-schema: docker-compose.yml" from the VScode linter. 
+    env_file:
+      - .env
+
+    # Project directory structure reminder:
+    # ------------------------------------------------------------------------------
+    # Place the following files and folders in the same directory as this YAML file:
+    # 
+    # ├── docker-compose.yml     # This Docker Compose file.
+    # ├── Dockerfile             # The Dockerfile used to build the container image.
+    # ├── data/                  # Directory to store input datasets or files.
+    # │   ├── ...                # (e.g., images, annotations, etc.)
+    # ├── models/                # Directory to store machine learning models.
+    # │   ├── ...                # (e.g., pre-trained models like .pth files.)
+    # ├── output/                # Directory to store application outputs.
+    # │   ├── ...                # (e.g., logs, predictions, or processed files.)
+    # ------------------------------------------------------------------------------
+
+    volumes:
+      # Volume mappings allow the container to access folders from the host machine.
+      - ./data:/workspace/data  # Map the host's 'data' directory to '/workspace/data' in the container.
+        # Use case: Store datasets or input files on the host and access them inside the container.
+      - ./models:/workspace/models  # Map the host's 'models' directory to '/workspace/models' in the container.
+        # Use case: Save or load machine learning models from the host machine.
+      - ./output:/workspace/output  # Map the host's 'output' directory to '/workspace/output' in the container.
+        # Use case: Store logs, predictions, or any other output files from your application.
+
+    # deploy:
+      # Remove the `resources` section
+      # resources:
+      #   limits:
+      #     memory: "100TB"
+      #     cpus: "99.0"
+
+    shm_size: "100TB"  # basically unlimited
+
+    working_dir: /lab_sg_extract  # Set the default working directory inside the container.
+    
+    stdin_open: true  # Keep the container's standard input open (useful for interactive shells).
+    tty: true  # Allocate a pseudo-TTY for the container (required for interactive shells like zsh).
+    
+    # Default command to start the container
+    command: [ "zsh" ]  # Start the container with zsh as the default shell.
+
