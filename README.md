@@ -27,10 +27,9 @@ This project is ongoing, and the Docker container is just one milestone among se
 
 ---
 
-
 ## 🛠️ Previous Attempts and Challenges
 
-### ❌ Attempt 1:([Microsoft's Dockerfile]([https://github.com/pakkinlau/gites](https://github.com/microsoft/scene_graph_benchmark/blob/main/docker/Dockerfile)))
+### ❌ Attempt 1: [Microsoft's Dockerfile](https://github.com/microsoft/scene_graph_benchmark/blob/main/docker/Dockerfile)
 
 The Dockerfile used the base image `nvidia/cuda:10.1-cudnn7-devel-ubuntu18.04`. However, this image is no longer available on Docker Hub, resulting in a build failure.
 
@@ -38,7 +37,7 @@ The Dockerfile used the base image `nvidia/cuda:10.1-cudnn7-devel-ubuntu18.04`. 
 
 ---
 
-### ❌ Attempt 2: ([2020 refactored Dockerfile using pytorch image by Tang]([https://github.com/pakkinlau/gites](https://github.com/microsoft/scene_graph_benchmark/blob/main/docker/Dockerfile)))
+### ❌ Attempt 2: [2020 refactored Dockerfile using PyTorch image by Tang](https://github.com/microsoft/scene_graph_benchmark/blob/main/docker/Dockerfile)
 
 The Dockerfile specified the base image `nvidia/cuda:9.0-cudnn7-devel-ubuntu16.04`, which has been deprecated and removed from Docker Hub, causing the build to fail.
 
@@ -48,7 +47,12 @@ The Dockerfile specified the base image `nvidia/cuda:9.0-cudnn7-devel-ubuntu16.0
 
 ### ✅ Current Solution: 2024 Refactored Dockerfile Using NVIDIA NGC
 
-We switched to the NVIDIA PyTorch container (`nvcr.io/nvidia/pytorch:24.10-py3`), which is actively maintained and optimized for GPU-accelerated PyTorch workflows. Before you begin, ensure the following are installed on your host system:- [Docker Engine](https://docs.docker.com/engine/install/)- [Docker Compose](https://docs.docker.com/compose/install/)- [NVIDIA Container Toolkit](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/install-guide.html)- An NVIDIA GPU with drivers installed
+We switched to the NVIDIA PyTorch container (`nvcr.io/nvidia/pytorch:24.10-py3`), which is actively maintained and optimized for GPU-accelerated PyTorch workflows. Before you begin, ensure the following are installed on your host system:
+
+- [Docker Engine](https://docs.docker.com/engine/install)
+- [Docker Compose](https://docs.docker.com/compose/install)
+- [NVIDIA Container Toolkit](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/install-guide.html)
+- An NVIDIA GPU with drivers installed
 
 ![](snapshots/2nd%20refactoring%20result.png)
 
