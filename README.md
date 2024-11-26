@@ -37,7 +37,7 @@ The Dockerfile used the base image `nvidia/cuda:10.1-cudnn7-devel-ubuntu18.04`. 
 
 ---
 
-### ❌ Attempt 2: [2020 refactored Dockerfile using PyTorch image by Tang](https://github.com/microsoft/scene_graph_benchmark/blob/main/docker/Dockerfile)
+### ❌ Attempt 2: [2020 Refactored Dockerfile by Tang Using PyTorch Image](https://github.com/microsoft/scene_graph_benchmark/blob/main/docker/Dockerfile)
 
 The Dockerfile specified the base image `nvidia/cuda:9.0-cudnn7-devel-ubuntu16.04`, which has been deprecated and removed from Docker Hub, causing the build to fail.
 
