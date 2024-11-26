@@ -53,8 +53,8 @@ We switched to the NVIDIA PyTorch container (`nvcr.io/nvidia/pytorch:24.10-py3`)
 ### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/<your-username>/scene-graph-benchmark-docker.git
-cd scene-graph-benchmark-docker
+git clone https://github.com/pakkinlau/scene_graph_benchmark_nvidia.git
+cd scene_graph_benchmark_nvidia
 ```
 
 ### 2. Build the Docker Image
