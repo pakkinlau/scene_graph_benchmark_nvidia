@@ -124,20 +124,6 @@ python tools/train_net.py --config-file configs/e2e_relation_sgdet.yml
 
 ---
 
-## 🔧 Support Matrix
-
-| **Feature**             | **Supported Version**                  |
-|--------------------------|----------------------------------------|
-| **PyTorch**             | 2.x                                    |
-| **CUDA Toolkit**        | 11.x                                   |
-| **cuDNN**               | Latest (bundled with PyTorch image)    |
-| **Base Image**          | `nvcr.io/nvidia/pytorch:24.10-py3`     |
-| **OS**                  | Ubuntu 20.04 (inside Docker container) |
-| **GPU Support**         | NVIDIA GPUs with CUDA >= 11.x          |
-| **Training Modes**      | Single-GPU and Multi-GPU               |
-
----
-
 ## 🧪 Testing the Environment
 
 1. **Verify GPU Access**  
