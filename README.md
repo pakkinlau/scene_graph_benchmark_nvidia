@@ -23,17 +23,23 @@ This repository provides a **November-2024-reworked** implementation of the Scen
 ### ✅ The New Build in November 2024: 
 
 3. **2024 Refactored Dockerfile Using NVIDIA NGC (current repository)**
-   - **Base Image**: `nvcr.io/nvidia/pytorch20.10-py3`.  
-   - **Key Features**:  
-     - Based on NVIDIA NGC's optimized PyTorch container, which includes pre-installed CUDA, cuDNN, NCCL, and other essential libraries for deep learning.  
-     - Supports Python 3.8 via Miniconda and includes PyTorch 1.7.0 with CUDA 11.0.  
-     - Ensures compatibility with modern hardware and software stacks through NVIDIA's tested framework support matrix.  
-     - Simplifies GPU runtime configuration using Docker Compose with `runtime: nvidia` and explicit GPU environment variables.  
-     - Includes robust volume mapping for data, models, and output, enabling seamless interaction with host resources.  
-     - Optimized for multi-GPU setups but also configurable for single-GPU use via environment variables.  
-
+   - **Base Image**: `nvcr.io/nvidia/pytorch20.10-py3`.
+   - No issue when running the container.
 ![](snapshots/2nd%20refactoring%20result.png)
 ![](snapshots/2nd%20refactoring%20result2.png)
+
+---
+
+### **Key Features**:  
+
+  - Compatible with VSCode, as VSCode [stop supporting](https://code.visualstudio.com/docs/remote/faq#_what-linux-packages-or-libraries-need-to-be-installed-on-a-host-to-use-remote-development) ubuntu 18.04 or earlier version. 
+  - Based on NVIDIA NGC's [optimized PyTorch container](https://catalog.ngc.nvidia.com/orgs/nvidia/containers/pytorch/tags), which includes pre-installed CUDA, cuDNN, NCCL, and other essential libraries for deep learning.  
+  - Supports Python 3.8 via Miniconda and includes PyTorch 1.7.0 with CUDA 11.0.  
+  - Ensures compatibility with Tested framework support matrix (PyTorch1.7 + CUDA 11.0 + Ubuntu 20.04 + Latest VSCode. )
+  - Simplifies GPU runtime configuration using Docker Compose with `runtime: nvidia` and explicit GPU environment variables.  
+  - Includes robust volume mapping for data, models, and output, enabling seamless interaction with host resources.  
+  - Optimized for multi-GPU setups but also configurable for single-GPU use via environment variables.  
+
 
 We switched to the NVIDIA PyTorch container (`nvcr.io/nvidia/pytorch:24.10-py3`), which is actively maintained by Nvidia NGC.
 
