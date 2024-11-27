@@ -6,15 +6,6 @@ This repository provides a **November-2024-reworked** implementation of the Scen
 
 ---
 
-## 📚 Features
-
-- **GPU-accelerated**: Built using NVIDIA's base PyTorch container for CUDA-enabled GPUs.
-- **Dockerized Environment**: Simplifies setup and ensures reproducibility.
-- **Scene Graph Tasks**: Tools for scene graph generation, object detection, and visual relationship detection.
-- **PyTorch 2.x Support**: Optimized for the latest GPU-accelerated PyTorch libraries.
-
----
-
 ## 🛠️ Challenges and Solutions
 
 ### ❌ Previous Attempts by Other Developers 
@@ -29,7 +20,7 @@ This repository provides a **November-2024-reworked** implementation of the Scen
    - **Issue**:  The image is outdated and removed from Docker Hub. Additionally, it uses PyTorch Nightly (pre-release), which is not ideal for production environments and leads to potential compatibility issues with newer dependencies.
 ![](snapshots/1st%20refactoring%20result.png)
 
-### ✅ Current Solution: 
+### ✅ The New Build in November 2024: 
 
 3. **2024 Refactored Dockerfile Using NVIDIA NGC (current repository)**
    - **Base Image**: `nvcr.io/nvidia/pytorch20.10-py3`.  
@@ -48,7 +39,45 @@ We switched to the NVIDIA PyTorch container (`nvcr.io/nvidia/pytorch:24.10-py3`)
 
 ---
 
-## 📦 Pre-Built Docker Image on Docker Hub
+## 🛠️ **Discussion 1: Why choosing NVIDIA NGC?**
+
+Compared to other standalone PyTorch containers or custom Dockerfiles, **NVIDIA NGC containers** offer the following advantages:
+
+1. **Tested Compatibility**:  
+   - NVIDIA rigorously tests their containers to ensure compatibility across **CUDA**, **PyTorch**, and system libraries.  
+   - This repository uses NVIDIA's PyTorch container (`nvcr.io/nvidia/pytorch20.10-py3`), which includes **CUDA 11.0**, **cuDNN**, **NCCL**, and other essential deep learning frameworks.  
+
+2. **Pre-installed Optimizations**:  
+   - NVIDIA NGC containers come with pre-installed libraries, eliminating the need to manually configure CUDA and other GPU dependencies.  
+   - These containers are optimized for multi-GPU setups, providing better performance for both training and inference tasks.  
+
+3. **Ongoing Maintenance**:  
+   - NVIDIA actively maintains and updates their NGC containers to ensure compatibility with the latest hardware and software stacks.  
+   - Outdated base images often used in other implementations (e.g., Ubuntu 16.04 or CUDA 9.0) can lead to build failures and compatibility issues.
+
+4. **Simplified GPU Configuration**:  
+   - The repository is pre-configured to work with NVIDIA's `runtime: nvidia` in Docker Compose, ensuring seamless GPU access.  
+
+---
+
+## 🛠️  **Discussion 2: Compatibility Consideration**
+
+This package is specifically designed to address common compatibility issues encountered in Scene Graph Benchmark implementations:
+
+1. **Ubuntu Compatibility**:  
+   - The NVIDIA NGC container is based on **Ubuntu 20.04**, providing compatibility with modern CUDA and PyTorch versions.  
+   - Using older Ubuntu versions (e.g., 18.04 or 16.04) can lead to dependency conflicts with CUDA 11.0 or newer.  
+
+2. **CUDA and PyTorch**:  
+   - The repository uses **PyTorch 1.7** with **CUDA 11.0**, ensuring compatibility with NVIDIA's framework support matrix.  
+   - Using unsupported CUDA versions (e.g., 10.x) with PyTorch 1.7 will result in runtime errors.  
+
+3. **VS Code Development**:  
+   - The container is compatible with VS Code's **Remote - Containers** extension, allowing seamless remote development.
+
+---
+
+## 📦 How To Use It? Pre-Built Docker Image on Docker Hub
 
 **Pull the Pre-Built Image**  
 ```bash
@@ -62,14 +91,7 @@ docker run --runtime=nvidia --gpus all -it your_username/scene_graph_benchmark:l
 
 ---
 
-#### **Tags**  
-
-- `latest`: The latest stable release of the container.  
-- `1.0.0`: The first release of the refactored container.  
-
----
-
-## 🚀 Developing This Image
+## 🚀 How To Change It? Developing This Image
 
 **1. System Requirements**
 
