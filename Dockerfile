@@ -18,7 +18,9 @@
 # Use NVIDIA's pre-built PyTorch container as the base image
 
 # Framework support matrix: https://docs.nvidia.com/deeplearning/frameworks/pytorch-release-notes/rel_20-12.html#rel_20-12
-FROM nvcr.io/nvidia/pytorch20.10-py3
+# FROM nvcr.io/nvidia/pytorch20.10-py3
+# The below version use local image. 
+FROM nvcr.io/nvidia/pytorch@sha256:65cf96f16323b2af66abc08ece22f3107477037201de288913cc87b92cbfba36
 
 # -------------------------------
 # 1. Conda Environment Variables
