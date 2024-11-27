@@ -79,7 +79,7 @@ Run the following command and provide your credentials:
 ```bash
 docker login nvcr.io
 ```
-- **Username**: Your NGC email address.  
+- **Username**: $oauthtoken (just copy this)
 - **Password**: The API key you just generated.
 
 #### Step 4: Pull the Docker Image
