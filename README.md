@@ -2,17 +2,6 @@
 
 This repository provides a **November-2024-reworked** implementation of the Scene Graph Benchmark Docker container definition, aimed at tasks like scene graph generation, object detection, and relationship detection. The current implementation is based on NVIDIA's PyTorch container with GPU acceleration, ensuring compatibility with CUDA and cuDNN.
 
----
-
-## 📅 Project Timeline
-
-This project is ongoing, and the Docker container is just one milestone among several tasks. Below is a progress timeline for the project:
-
-- [x] Refactored the Docker container for Scene Graph Benchmark using NVIDIA PyTorch base image.  
-- [ ] Begin implementation refinements for the `scene_graph_benchmark` package, focusing on bug fixes and adding support for new datasets.  
-- [ ] Conduct experiments and benchmarks using the Scene Graph Benchmark package for our research project.  
-- [ ] Publish results and release extended utilities for scene graph generation and object detection.  
-
 > Note: While we are actively working on a research project involving this package, further details regarding our lab and research focus will be shared at a later date.
 
 ---
@@ -28,20 +17,34 @@ This project is ongoing, and the Docker container is just one milestone among se
 
 ## 🛠️ Challenges and Solutions
 
-### ❌ Previous Attempts
+### ❌ Previous Attempts by Other Developers 
 
-1. **[Microsoft's Dockerfile](https://github.com/microsoft/scene_graph_benchmark/blob/main/docker/Dockerfile)**  
+1. **[2020 Dockerfile by Microsoft (not maintained, component outdated)](https://github.com/microsoft/scene_graph_benchmark/blob/main/docker/Dockerfile)**  
    - **Base Image**: `nvidia/cuda:10.1-cudnn7-devel-ubuntu18.04`.  
-   - **Issue**: Image no longer available, resulting in build failure.
+   - **Issue**: Image no longer available on Docker Hub, leading to build failures.
+![](snapshots/microsoft%20result.png)
 
-2. **[2020 Refactored Dockerfile](https://github.com/microsoft/scene_graph_benchmark/blob/main/docker/Dockerfile)**  
+2. **[2020 Refactored Dockerfile (not maintained, component outdated)](https://github.com/microsoft/scene_graph_benchmark/blob/main/docker/Dockerfile)**  
    - **Base Image**: `nvidia/cuda:9.0-cudnn7-devel-ubuntu16.04`.  
-   - **Issue**: Deprecated and removed from Docker Hub.
+   - **Issue**:  The image is outdated and removed from Docker Hub. Additionally, it uses PyTorch Nightly (pre-release), which is not ideal for production environments and leads to potential compatibility issues with newer dependencies.
+![](snapshots/1st%20refactoring%20result.png)
 
-### ✅ Current Solution: 2024 Refactored Dockerfile Using NVIDIA NGC
+### ✅ Current Solution: 
 
-We switched to the NVIDIA PyTorch container (`nvcr.io/nvidia/pytorch:24.10-py3`), which is actively maintained and optimized for GPU-accelerated PyTorch workflows.
+3. **2024 Refactored Dockerfile Using NVIDIA NGC (current repository)**
+   - **Base Image**: `nvcr.io/nvidia/pytorch20.10-py3`.  
+   - **Key Features**:  
+     - Based on NVIDIA NGC's optimized PyTorch container, which includes pre-installed CUDA, cuDNN, NCCL, and other essential libraries for deep learning.  
+     - Supports Python 3.8 via Miniconda and includes PyTorch 1.7.0 with CUDA 11.0.  
+     - Ensures compatibility with modern hardware and software stacks through NVIDIA's tested framework support matrix.  
+     - Simplifies GPU runtime configuration using Docker Compose with `runtime: nvidia` and explicit GPU environment variables.  
+     - Includes robust volume mapping for data, models, and output, enabling seamless interaction with host resources.  
+     - Optimized for multi-GPU setups but also configurable for single-GPU use via environment variables.  
 
+![](snapshots/2nd%20refactoring%20result.png)
+![](snapshots/2nd%20refactoring%20result2.png)
+
+We switched to the NVIDIA PyTorch container (`nvcr.io/nvidia/pytorch:24.10-py3`), which is actively maintained by Nvidia NGC.
 ---
 
 ## 🚀 Quick Start
@@ -138,7 +141,13 @@ python tools/train_net.py --config-file configs/e2e_relation_sgdet.yml
    python -c "import torch; print(torch.__version__)"
    ```
 
-3. **Test the Training Script**  
+3. **Install Scene Graph package**
+   Run this command to install the package right after running the container.
+   ```
+   python /lab_sg_extract/scene_graph_benchmark/setup.py install
+   ```
+
+5. **Test the Training Script**  
    Run the scene graph benchmark training script:
    ```bash
    python tools/train_net.py --config-file configs/e2e_relation_sgdet.yml
