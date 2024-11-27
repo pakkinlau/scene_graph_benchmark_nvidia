@@ -71,7 +71,7 @@ docker run --runtime=nvidia --gpus all -it your_username/scene_graph_benchmark:l
 
 ## 🚀 Developing This Image
 
-### 1. System Requirements
+**1. System Requirements**
 
 Ensure the following are installed on your host system:
 
@@ -87,19 +87,19 @@ Ensure the following are installed on your host system:
 
 ---
 
-### 2. NVIDIA NGC Authentication
+**2. NVIDIA NGC Authentication**
 
 The NVIDIA PyTorch container is hosted on **NVIDIA NGC**, which may require authentication for private images. Follow these steps to log in and pull the container:
 
-#### Step 1: Create an NVIDIA NGC Account
+Step 1: Create an NVIDIA NGC Account
 - Go to [NVIDIA NGC](https://ngc.nvidia.com/signup) and create an account.
 
-#### Step 2: Generate an API Key
+Step 2: Generate an API Key
 - Log in to your NGC account.
 - Navigate to the **API Key** page: [NGC API Key](https://ngc.nvidia.com/setup/api-key).
 - Click **Generate API Key** and copy the key.
 
-#### Step 3: Log in to NVIDIA NGC
+Step 3: Log in to NVIDIA NGC
 Run the following command and provide your credentials:
 ```bash
 docker login nvcr.io
@@ -107,7 +107,7 @@ docker login nvcr.io
 - **Username**: `$oauthtoken`  
 - **Password**: The API key you just generated.
 
-#### Step 4: Pull the Docker Image
+Step 4: Pull the Docker Image
 Once logged in, pull the NVIDIA PyTorch container:
 ```bash
 docker pull nvcr.io/nvidia/pytorch:24.10-py3
@@ -115,26 +115,26 @@ docker pull nvcr.io/nvidia/pytorch:24.10-py3
 
 ---
 
-### 3. Clone the Repository
+**3. Clone the Repository**
 
 ```bash
 git clone https://github.com/pakkinlau/scene_graph_benchmark_nvidia.git
 cd scene_graph_benchmark_nvidia
 ```
 
-### 4. Build the Docker Image
+**4. Build the Docker Image**
 
 ```bash
 docker-compose build
 ```
 
-### 5. Run the Container
+**5. Run the Container**
 
 ```bash
 docker-compose up
 ```
 
-### 6. Interact with the Container
+**6. Interact with the Container**
 
 Attach to the running container's shell:
 ```bash
