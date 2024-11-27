@@ -16,7 +16,9 @@
 # 8. Torch-TensorRT
 
 # Use NVIDIA's pre-built PyTorch container as the base image
-FROM nvcr.io/nvidia/pytorch:24.10-py3
+
+# Framework support matrix: https://docs.nvidia.com/deeplearning/frameworks/pytorch-release-notes/rel_20-12.html#rel_20-12
+FROM nvcr.io/nvidia/pytorch20.10-py3
 
 # -------------------------------
 # 1. Conda Environment Variables
