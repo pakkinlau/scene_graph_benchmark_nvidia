@@ -45,9 +45,31 @@ This repository provides a **November-2024-reworked** implementation of the Scen
 ![](snapshots/2nd%20refactoring%20result2.png)
 
 We switched to the NVIDIA PyTorch container (`nvcr.io/nvidia/pytorch:24.10-py3`), which is actively maintained by Nvidia NGC.
+
 ---
 
-## 🚀 Quick Start
+## 📦 Pre-Built Docker Image on Docker Hub
+
+**Pull the Pre-Built Image**  
+```bash
+docker pull pakkinlau/scene_graph_benchmark_nvidia:latest
+```
+
+**Run the Container**  
+```bash
+docker run --runtime=nvidia --gpus all -it your_username/scene_graph_benchmark:latest zsh
+```
+
+---
+
+#### **Tags**  
+
+- `latest`: The latest stable release of the container.  
+- `1.0.0`: The first release of the refactored container.  
+
+---
+
+## 🚀 Developing This Image
 
 ### 1. System Requirements
 
