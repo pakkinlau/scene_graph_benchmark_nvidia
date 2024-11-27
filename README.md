@@ -8,10 +8,10 @@ This repository provides a **November-2024-reworked** implementation of the Scen
 
 This project is ongoing, and the Docker container is just one milestone among several tasks. Below is a progress timeline for the project:
 
-- [x]: Refactored the Docker container for Scene Graph Benchmark using NVIDIA PyTorch base image.  
-- [ ]: Begin implementation refinements for the `scene_graph_benchmark` package, focusing on bug fixes and adding support for new datasets.  
-- [ ]: Conduct experiments and benchmarks using the Scene Graph Benchmark package for our research project.  
-- [ ]: Publish results and release extended utilities for scene graph generation and object detection.  
+- [x] Refactored the Docker container for Scene Graph Benchmark using NVIDIA PyTorch base image.  
+- [ ] Begin implementation refinements for the `scene_graph_benchmark` package, focusing on bug fixes and adding support for new datasets.  
+- [ ] Conduct experiments and benchmarks using the Scene Graph Benchmark package for our research project.  
+- [ ] Publish results and release extended utilities for scene graph generation and object detection.  
 
 > Note: While we are actively working on a research project involving this package, further details regarding our lab and research focus will be shared at a later date.
 
@@ -64,7 +64,7 @@ Ensure the following are installed on your host system:
 
 ### 2. NVIDIA NGC Authentication
 
-The NVIDIA PyTorch container is hosted on **NVIDIA NGC**, which requires authentication. Follow these steps to log in and pull the container:
+The NVIDIA PyTorch container is hosted on **NVIDIA NGC**, which may require authentication for private images. Follow these steps to log in and pull the container:
 
 #### Step 1: Create an NVIDIA NGC Account
 - Go to [NVIDIA NGC](https://ngc.nvidia.com/signup) and create an account.
@@ -79,7 +79,7 @@ Run the following command and provide your credentials:
 ```bash
 docker login nvcr.io
 ```
-- **Username**: $oauthtoken (just copy this)
+- **Username**: `$oauthtoken`  
 - **Password**: The API key you just generated.
 
 #### Step 4: Pull the Docker Image
