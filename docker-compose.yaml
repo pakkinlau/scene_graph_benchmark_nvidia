@@ -5,7 +5,7 @@ services:
     build:
       context: .  # Build the image from the current directory.
       dockerfile: Dockerfile  # Use the specified Dockerfile to build the image.
-    image: lab_sg_extract_container:latest  # Custom, recognizable image name.
+    image: lab_sg_extract_container  # Custom, recognizable image name.
     runtime: nvidia  # Enable NVIDIA GPU runtime for GPU acceleration.
     
     environment:
@@ -15,12 +15,11 @@ services:
       - NVIDIA_DRIVER_CAPABILITIES=compute,utility  # Required for CUDA support
       - CONDA_DEFAULT_ENV=py38            # Set default Conda environment
       - CONDA_PREFIX=/miniconda/envs/py38 # Path to the Conda environment
-      - PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/miniconda/envs/py38/bin:/miniconda/bin:/usr/local/cuda/bin
+      - PATH=/miniconda/envs/py38/bin:/miniconda/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/local/cuda/bin
       - LD_LIBRARY_PATH=/usr/local/cuda/lib64:/usr/lib/x86_64-linux-gnu:/lib/x86_64-linux-gnu
 
     # Use an external .env file for sensitive variables or environment-specific configurations.
     # Example: NVIDIA_VISIBLE_DEVICES=all in .env.prod, NVIDIA_VISIBLE_DEVICES=0 in .env.dev
-    # Tip: We can just ignore the "Property env_file is not allowed.yaml-schema: docker-compose.yml" from the VScode linter. 
     env_file:
       - .env
 
@@ -47,14 +46,7 @@ services:
       - ./output:/workspace/output  # Map the host's 'output' directory to '/workspace/output' in the container.
         # Use case: Store logs, predictions, or any other output files from your application.
 
-    # deploy:
-      # Remove the `resources` section
-      # resources:
-      #   limits:
-      #     memory: "100TB"
-      #     cpus: "99.0"
-
-    shm_size: "100TB"  # basically unlimited
+    shm_size: "100GB"  # Set shared memory size, reduces issues with large datasets
 
     working_dir: /lab_sg_extract  # Set the default working directory inside the container.
     
@@ -63,4 +55,3 @@ services:
     
     # Default command to start the container
     command: [ "zsh" ]  # Start the container with zsh as the default shell.
-

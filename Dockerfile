@@ -18,49 +18,23 @@
 # Use NVIDIA's pre-built PyTorch container as the base image
 
 # Framework support matrix: https://docs.nvidia.com/deeplearning/frameworks/pytorch-release-notes/rel_20-12.html#rel_20-12
+# credential error might be triggered in this step so it is not recommended to do this one. 
 # FROM nvcr.io/nvidia/pytorch20.10-py3
+
 # The below version use local image. 
+# You need to pull the image to local with `nvcr.io/nvidia/pytorch:20.10-py3` before this step. 
+# Use NVIDIA's pre-built PyTorch container as the base image
 FROM nvcr.io/nvidia/pytorch@sha256:65cf96f16323b2af66abc08ece22f3107477037201de288913cc87b92cbfba36
 
-# -------------------------------
-# 1. Conda Environment Variables
-# -------------------------------
-ENV CONDA_DEFAULT_ENV=py38
-ENV CONDA_PREFIX=/miniconda/envs/${CONDA_DEFAULT_ENV}
+# Set the working directory inside the container
+WORKDIR /lab_sg_extract
 
-# -------------------------------
-# 2. CUDA Environment Variables
-# -------------------------------
-ENV CUDA_HOME=/usr/local/cuda
-ENV LD_LIBRARY_PATH=${CUDA_HOME}/lib64:${LD_LIBRARY_PATH}
-
-# -------------------------------
-# 3. Define Custom PATH Variable
-# -------------------------------
-ENV CONTAINER_PATH=${CUDA_HOME}/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:${CONDA_PREFIX}/bin:/miniconda/bin
-ENV PATH=${CONTAINER_PATH}
-
-# -------------------------------
-# 4. Python Environment Variables
-# -------------------------------
-ENV PYTHONIOENCODING=UTF-8
-ENV PYTHONDONTWRITEBYTECODE=1
-
-# -------------------------------
-# 5. Application-Specific Variables
-# -------------------------------
-ENV APP_HOME=/lab_sg_extract
-WORKDIR ${APP_HOME}
-
-# -------------------------------
-# System Setup and Installation
-# -------------------------------
+# Install required system packages for compilation and runtime
 RUN apt-get update -y && \
     apt-get install -y --no-install-recommends \
-    git curl ca-certificates bzip2 cmake tree htop bmon iotop ninja-build make \
+    git curl ca-certificates cmake build-essential tree htop bmon iotop ninja-build make \
     libglib2.0-0 libsm6 libxext6 libxrender-dev libyaml-dev libjpeg-dev libpng-dev \
-    zlib1g-dev vim zsh wget tmux python3-dev build-essential \
-    gawk coreutils && \
+    zlib1g-dev vim zsh wget tmux gawk coreutils && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
@@ -70,26 +44,27 @@ RUN curl -so /miniconda.sh https://repo.anaconda.com/miniconda/Miniconda3-latest
     /miniconda.sh -b -p /miniconda && \
     rm /miniconda.sh
 
-# Create and activate the Conda environment
-RUN /miniconda/bin/conda create -y --name ${CONDA_DEFAULT_ENV} python=3.8 && \
-    /miniconda/bin/conda install -y -n ${CONDA_DEFAULT_ENV} conda-build && \
-    /miniconda/bin/conda clean -ya
+# Set Conda environment variables
+ENV PATH=/miniconda/bin:$PATH
 
-# Install Python and additional dependencies in the Conda environment
-RUN /miniconda/bin/conda run -n ${CONDA_DEFAULT_ENV} conda install -y ipython h5py nltk joblib jupyter pandas scipy && \
-    /miniconda/bin/conda run -n ${CONDA_DEFAULT_ENV} pip install requests yacs>=0.1.8 numpy>=1.19.5 matplotlib opencv-python tqdm \
-    protobuf tensorboardx pymongo scikit-learn boto3 scikit-image cityscapesscripts && \
-    /miniconda/bin/conda run -n ${CONDA_DEFAULT_ENV} pip install azureml-defaults>=1.0.45 azureml.core inference-schema && \
-    /miniconda/bin/conda run -n ${CONDA_DEFAULT_ENV} pip --no-cache-dir install --force-reinstall -I pyyaml && \
-    /miniconda/bin/conda run -n ${CONDA_DEFAULT_ENV} conda install -y -c conda-forge pycocotools timm einops cython
+# Create and activate a Conda environment
+RUN conda create -y --name py38 python=3.8 && \
+    conda install -y -n py38 pytorch==1.7.0 torchvision==0.8.1 cudatoolkit=11.0 -c pytorch -c nvidia && \
+    conda install -y -n py38 numpy>=1.19.5 matplotlib opencv tqdm \
+    yacs>=0.1.8 pycocotools cython && \
+    conda clean -ya
 
-# Download NLTK data (e.g., tokenizer)
-RUN /miniconda/bin/conda run -n ${CONDA_DEFAULT_ENV} python -m nltk.downloader punkt
+# Set the default Conda environment
+ENV CONDA_DEFAULT_ENV=py38
+ENV CONDA_PREFIX=/miniconda/envs/${CONDA_DEFAULT_ENV}
+ENV PATH=${CONDA_PREFIX}/bin:${PATH}
 
-# Clone the repository into a subdirectory of the working directory
-RUN git clone https://github.com/microsoft/scene_graph_benchmark.git ${APP_HOME}/scene_graph_benchmark && \
-    cd ${APP_HOME}/scene_graph_benchmark && \
-    /miniconda/bin/conda run -n ${CONDA_DEFAULT_ENV} python setup.py build develop
+# Clone the Microsoft Scene Graph Benchmark repository
+RUN git clone https://github.com/microsoft/scene_graph_benchmark.git /lab_sg_extract/scene_graph_benchmark
 
-# Default to zsh shell
-CMD [ "zsh" ]
+# Compile and install the Scene Graph Benchmark package
+RUN cd /lab_sg_extract/scene_graph_benchmark && \
+    python setup.py build develop
+
+# Set the default shell to Zsh for interactive usage
+CMD ["zsh"]
