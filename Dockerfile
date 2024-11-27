@@ -50,8 +50,8 @@ ENV PATH=/miniconda/bin:$PATH
 # Create and activate a Conda environment
 RUN conda create -y --name py38 python=3.8 && \
     conda install -y -n py38 pytorch==1.7.0 torchvision==0.8.1 cudatoolkit=11.0 -c pytorch -c nvidia && \
-    conda install -y -n py38 numpy>=1.19.5 matplotlib opencv tqdm \
-    yacs>=0.1.8 pycocotools cython && \
+    conda install -y -n py38 numpy>=1.19.5 matplotlib opencv tqdm yacs>=0.1.8 cython -c defaults && \
+    conda install -y -n py38 pycocotools -c conda-forge && \
     conda clean -ya
 
 # Set the default Conda environment
